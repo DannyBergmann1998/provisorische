@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(find /c/Dev/hps/handyundpcservice/frontend/public -type f \\\\\\(-name *.svg -o -name *.png \\\\\\))",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/apple.svg\" -o apple.svg)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/samsung.svg\" -o samsung.svg)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/huawei.svg\" -o huawei.svg)",
+      "Bash(curl -sL \"https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/xiaomi.svg\" -o xiaomi.svg)"
+    ]
+  }
+}

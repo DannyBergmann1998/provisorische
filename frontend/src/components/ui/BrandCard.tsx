@@ -23,7 +23,7 @@ export function BrandCard({ name, logo, isSelected, onClick }: BrandCardProps) {
           alt={name}
           width={64}
           height={64}
-          className="object-contain w-full h-full text-black dark:text-white"
+          className="object-contain w-full h-full dark:invert"
         />
       </div>
       <p className="text-sm font-semibold text-black dark:text-white text-center">{name}</p>
