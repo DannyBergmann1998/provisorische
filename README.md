@@ -1,2 +1,2 @@
-# handyundpcservice
-Monorepo from Handy &amp; PC Service
+# Handy & PC Service
+Monorepo from Handy & PC Service
