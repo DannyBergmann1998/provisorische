@@ -1,0 +1,328 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────────────────────────
+
+enum Role {
+  CUSTOMER
+  TECHNICIAN
+  ADMIN
+  SUPERADMIN
+}
+
+enum DeviceType {
+  PHONE
+  PC
+  LAPTOP
+  CONSOLE
+  TABLET
+  OTHER
+}
+
+enum RepairStatus {
+  PENDING
+  RECEIVED
+  IN_PROGRESS
+  WAITING_PARTS
+  DONE
+  CANCELLED
+}
+
+enum BuybackStatus {
+  PENDING
+  REVIEWED
+  ACCEPTED
+  REJECTED
+  COMPLETED
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+// ─── Users ────────────────────────────────────────────────────────────────────
+
+model User {
+  id               String   @id @default(cuid())
+  email            String   @unique
+  password         String
+  name             String?
+  phone            String?
+  address          Json?
+  role             Role     @default(CUSTOMER)
+  emailVerified    Boolean  @default(false)
+  twoFactorSecret  String?
+  twoFactorEnabled Boolean  @default(false)
+  avatarUrl        String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  verificationTokens VerificationToken[]
+  passwordResets     PasswordReset[]
+  refreshTokens      RefreshToken[]
+  repairs            Repair[]
+  buybacks           Buyback[]
+  orders             Order[]
+  uploads            Upload[]
+  invoices           Invoice[]
+
+  @@index([email])
+  @@index([role])
+}
+
+// ─── Auth Tokens ──────────────────────────────────────────────────────────────
+
+model VerificationToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}
+
+model PasswordReset {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  used      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}
+
+model RefreshToken {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  revoked   Boolean  @default(false)
+  userAgent String?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([token])
+  @@index([userId])
+}
+
+// ─── Repairs ──────────────────────────────────────────────────────────────────
+
+model Repair {
+  id             String       @id @default(cuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  deviceType     DeviceType
+  deviceModel    String
+  issue          String
+  description    String?
+  estimatedPrice Decimal?     @db.Decimal(10, 2)
+  finalPrice     Decimal?     @db.Decimal(10, 2)
+  status         RepairStatus @default(PENDING)
+  adminNotes     String?
+  trackingNumber String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  uploads Upload[]
+  invoice Invoice?
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+// ─── Buybacks ─────────────────────────────────────────────────────────────────
+
+model Buyback {
+  id             String        @id @default(cuid())
+  userId         String
+  user           User          @relation(fields: [userId], references: [id])
+  deviceType     DeviceType
+  deviceModel    String
+  serialNumber   String        // IMEI or serial number for device identification
+  condition      String
+  description    String?
+  offeredPrice   Decimal       @db.Decimal(10, 2)
+  finalPrice     Decimal?      @db.Decimal(10, 2)
+  status         BuybackStatus @default(PENDING)
+  adminNotes     String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  uploads Upload[]
+
+  @@index([userId])
+  @@index([status])
+  @@index([serialNumber])
+  @@index([createdAt])
+}
+
+// ─── Shop ─────────────────────────────────────────────────────────────────────
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  imageUrl    String?
+  products    Product[]
+
+  @@index([slug])
+}
+
+model Product {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  price       Decimal   @db.Decimal(10, 2)
+  compareAt   Decimal?  @db.Decimal(10, 2)
+  stock       Int       @default(0)
+  sku         String?   @unique
+  categoryId  String?
+  category    Category? @relation(fields: [categoryId], references: [id])
+  images      String[]
+  published   Boolean   @default(false)
+  featured    Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  orderItems OrderItem[]
+
+  @@index([slug])
+  @@index([categoryId])
+  @@index([published])
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  status          OrderStatus @default(PENDING)
+  totalAmount     Decimal     @db.Decimal(10, 2)
+  shippingCost    Decimal     @default(0) @db.Decimal(10, 2)
+  stripeSessionId String?
+  shippingAddress Json?
+  billingAddress  Json?
+  notes           String?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  items   OrderItem[]
+  payment Payment?
+  invoice Invoice?
+
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+
+  @@index([orderId])
+  @@index([productId])
+}
+
+// ─── Payments ─────────────────────────────────────────────────────────────────
+
+model Payment {
+  id        String   @id @default(cuid())
+  orderId   String   @unique
+  order     Order    @relation(fields: [orderId], references: [id])
+  stripeId  String   @unique
+  amount    Decimal  @db.Decimal(10, 2)
+  currency  String   @default("eur")
+  status    String
+  createdAt DateTime @default(now())
+
+  @@index([stripeId])
+}
+
+// ─── Invoices ─────────────────────────────────────────────────────────────────
+
+model Invoice {
+  id       String  @id @default(cuid())
+  userId   String
+  user     User    @relation(fields: [userId], references: [id])
+  orderId  String? @unique
+  order    Order?  @relation(fields: [orderId], references: [id])
+  repairId String? @unique
+  repair   Repair? @relation(fields: [repairId], references: [id])
+  number   String  @unique
+  amount   Decimal @db.Decimal(10, 2)
+  pdfUrl   String?
+  dueDate  DateTime?
+  paid     Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([number])
+}
+
+// ─── Uploads ──────────────────────────────────────────────────────────────────
+
+model Upload {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  repairId  String?
+  repair    Repair?  @relation(fields: [repairId], references: [id])
+  buybackId String?
+  buyback   Buyback? @relation(fields: [buybackId], references: [id])
+  filename  String
+  url       String
+  size      Int
+  mimeType  String
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([repairId])
+  @@index([buybackId])
+}
+
+// ─── Audit Log ────────────────────────────────────────────────────────────────
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  ipAddress String?
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([createdAt])
+}

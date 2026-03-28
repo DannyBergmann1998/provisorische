@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 64" preserveAspectRatio="xMidYMid meet">
+  <!-- PayPal Official Logo -->
+
+  <!-- White background -->
+  <rect width="140" height="64" fill="white" rx="4"/>
+
+  <!-- PayPal P symbol (blue) -->
+  <g fill="#003087">
+    <ellipse cx="18" cy="16" rx="7" ry="6"/>
+    <rect x="11" y="16" width="14" height="16" fill="#003087"/>
+    <rect x="11" y="28" width="6" height="4" fill="#003087"/>
+  </g>
+
+  <!-- PayPal text in official blue -->
+  <text x="90" y="38" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="22" font-weight="700" fill="#003087" letter-spacing="0.5">PayPal</text>
+</svg>

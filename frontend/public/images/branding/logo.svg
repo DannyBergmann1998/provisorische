@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Background -->
+  <defs>
+    <linearGradient id="greenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4CAF50;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#45a049;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="blueGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2196F3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0b7dda;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="orangeGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF9800;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#e68900;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Green Card (Left) -->
+  <rect
+    x="80"
+    y="140"
+    width="160"
+    height="200"
+    rx="24"
+    fill="url(#greenGradient)"
+    filter="url(#shadow)"
+    class="transition-transform"
+  />
+
+  <!-- Blue Card (Top Right) -->
+  <rect
+    x="220"
+    y="80"
+    width="160"
+    height="200"
+    rx="24"
+    fill="url(#blueGradient)"
+    filter="url(#shadow)"
+    class="transition-transform"
+  />
+
+  <!-- Orange Card (Bottom Right) -->
+  <rect
+    x="150"
+    y="260"
+    width="160"
+    height="200"
+    rx="24"
+    fill="url(#orangeGradient)"
+    filter="url(#shadow)"
+    class="transition-transform"
+  />
+
+  <!-- Glossy Effect on Cards -->
+  <ellipse cx="130" cy="170" rx="30" ry="40" fill="white" opacity="0.15" />
+  <ellipse cx="280" cy="130" rx="30" ry="40" fill="white" opacity="0.15" />
+  <ellipse cx="210" cy="290" rx="30" ry="40" fill="white" opacity="0.15" />
+</svg>

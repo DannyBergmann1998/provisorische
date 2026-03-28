@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Xiaomi Mi Logo -->
+  <g fill="currentColor">
+    <!-- Left rectangle M -->
+    <rect x="15" y="25" width="12" height="50" rx="2"/>
+    <!-- Middle top rectangle i -->
+    <rect x="38" y="25" width="12" height="50" rx="2"/>
+    <!-- Dot above middle -->
+    <circle cx="44" cy="18" r="4"/>
+    <!-- Right rectangle -->
+    <rect x="61" y="25" width="12" height="50" rx="2"/>
+  </g>
+</svg>
