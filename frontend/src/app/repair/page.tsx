@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Wrench, Calculator, ArrowRight, CheckCircle, AlertCircle } from "lucide-react";
@@ -11,7 +10,6 @@ import { BrandGrid } from "@/components/ui/BrandGrid";
 import { repairRequestSchema, type RepairRequestInput } from "@/lib/validations";
 import { REPAIR_PRICES } from "@/types";
 import { formatPrice } from "@/lib/utils";
-import { useAuth } from "@/hooks/useAuth";
 import { repairBrands } from "@/data/brands";
 
 const DEVICE_LABELS: Record<string, string> = {
@@ -24,9 +22,6 @@ const DEVICE_LABELS: Record<string, string> = {
 };
 
 export default function RepairPage() {
-  const router = useRouter();
-  const { user } = useAuth();
-  const [estimate, setEstimate] = useState<{ min: number; max: number } | null>(null);
   const [success, setSuccess]   = useState(false);
   const [serverErr, setServerErr] = useState("");
   const [selectedBrand, setSelectedBrand] = useState<string | null>(null);
@@ -49,27 +44,9 @@ export default function RepairPage() {
     : null;
 
   const onSubmit = async (data: RepairRequestInput) => {
-    if (!user) {
-      router.push("/login?redirect=/repair");
-      return;
-    }
-
     setServerErr("");
-    try {
-      const res = await fetch("/api/repairs", {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(data),
-      });
-      const json = await res.json();
-      if (!res.ok) {
-        setServerErr(json.error ?? "Fehler beim Absenden.");
-        return;
-      }
-      setSuccess(true);
-    } catch {
-      setServerErr("Serverfehler. Bitte erneut versuchen.");
-    }
+    // TODO: Submit to Kotlin backend
+    setSuccess(true);
   };
 
   if (success) {
@@ -85,10 +62,7 @@ export default function RepairPage() {
                 Wir haben deine Reparaturanfrage erhalten und melden uns schnellstmöglich bei dir.
               </p>
               <div className="flex gap-3 justify-center">
-                <button onClick={() => router.push("/dashboard/repairs")} className="btn-primary">
-                  Meine Aufträge
-                </button>
-                <button onClick={() => setSuccess(false)} className="btn-secondary">
+                <button onClick={() => setSuccess(false)} className="btn-primary">
                   Neue Anfrage
                 </button>
               </div>
@@ -221,11 +195,7 @@ export default function RepairPage() {
                   ) : (
                     <ArrowRight size={16} />
                   )}
-                  {!user
-                    ? "Anmelden & anfragen"
-                    : isSubmitting
-                    ? "Wird gesendet..."
-                    : "Reparatur anfragen"}
+                  {isSubmitting ? "Wird gesendet..." : "Reparatur anfragen"}
                 </button>
               </form>
             </div>

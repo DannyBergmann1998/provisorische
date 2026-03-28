@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RefreshCw, CheckCircle, AlertCircle, Info } from "lucide-react";
@@ -10,7 +9,6 @@ import { Footer } from "@/components/landing/Footer";
 import { buybackRequestSchema, type BuybackRequestInput } from "@/lib/validations";
 import { BUYBACK_MULTIPLIERS } from "@/types";
 import { formatPrice } from "@/lib/utils";
-import { useAuth } from "@/hooks/useAuth";
 
 const CONDITIONS = Object.keys(BUYBACK_MULTIPLIERS);
 
@@ -44,10 +42,7 @@ function detectIdentifierType(input: string): string {
 }
 
 export default function BuybackPage() {
-  const router = useRouter();
-  const { user } = useAuth();
   const [success,   setSuccess]   = useState(false);
-  const [estimate,  setEstimate]  = useState<number | null>(null);
   const [serverErr, setServerErr] = useState("");
   const [serialType, setSerialType] = useState<string | null>(null);
 
@@ -74,21 +69,9 @@ export default function BuybackPage() {
   })();
 
   const onSubmit = async (data: BuybackRequestInput) => {
-    if (!user) { router.push("/login?redirect=/buyback"); return; }
     setServerErr("");
-    try {
-      const res = await fetch("/api/buybacks", {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify(data),
-      });
-      const json = await res.json();
-      if (!res.ok) { setServerErr(json.error ?? "Fehler bei der Anfrage."); return; }
-      setEstimate(Number(json.data?.offeredPrice ?? 0));
-      setSuccess(true);
-    } catch {
-      setServerErr("Serverfehler. Bitte versuche es später erneut.");
-    }
+    // TODO: Submit to Kotlin backend
+    setSuccess(true);
   };
 
   if (success) {
@@ -99,21 +82,11 @@ export default function BuybackPage() {
           <div className="card max-w-md text-center mx-4">
             <CheckCircle size={64} className="text-green-400 mx-auto mb-4" />
             <h2 className="text-2xl font-black text-white mb-3">Anfrage eingegangen!</h2>
-            {estimate && (
-              <div className="bg-primary-500/10 border border-primary-500/30 rounded-xl p-4 my-4">
-                <p className="text-slate-400 text-sm mb-1">Unser Angebot</p>
-                <p className="text-3xl font-black text-primary-400">{formatPrice(estimate)}</p>
-                <p className="text-xs text-slate-500 mt-1">Vorbehaltlich der Prüfung</p>
-              </div>
-            )}
             <p className="text-slate-400 text-sm mb-6">
               Wir prüfen deine Anfrage und melden uns innerhalb von 24 Stunden.
             </p>
             <div className="flex gap-3 justify-center">
-              <button onClick={() => router.push("/dashboard/buybacks")} className="btn-primary">
-                Meine Anfragen
-              </button>
-              <button onClick={() => setSuccess(false)} className="btn-secondary">
+              <button onClick={() => setSuccess(false)} className="btn-primary">
                 Weitere Anfrage
               </button>
             </div>
@@ -240,7 +213,7 @@ export default function BuybackPage() {
                   ) : (
                     <RefreshCw size={16} />
                   )}
-                  {!user ? "Anmelden & anfragen" : "Ankaufsanfrage senden"}
+                  Ankaufsanfrage senden
                 </button>
               </form>
             </div>

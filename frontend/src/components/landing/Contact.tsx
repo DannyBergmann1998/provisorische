@@ -13,24 +13,10 @@ export function Contact() {
     e.preventDefault();
     setLoading(true);
     setError("");
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      });
-      if (res.ok) {
-        setSent(true);
-        setForm({ name: "", email: "", message: "", phone: "" });
-      } else {
-        setError("Etwas ist schiefgelaufen. Bitte versuche es erneut.");
-      }
-    } catch {
-      setError("Etwas ist schiefgelaufen. Bitte versuche es erneut.");
-    } finally {
-      setLoading(false);
-    }
+    // TODO: Submit to Kotlin backend
+    setSent(true);
+    setForm({ name: "", email: "", message: "", phone: "" });
+    setLoading(false);
   };
 
   return (

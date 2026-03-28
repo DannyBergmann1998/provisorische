@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ShoppingCart, Trash2, Plus, Minus, Package, ArrowRight } from "lucide-react";
+import { ShoppingCart, Trash2, Plus, Minus, Package } from "lucide-react";
 import { Navbar } from "@/components/ui/Navbar";
 import { Footer } from "@/components/landing/Footer";
 import { useCartStore } from "@/store/cartStore";
@@ -145,11 +145,6 @@ export default function CartPage() {
                     <span className="text-primary-400">{formatPrice(total)}</span>
                   </div>
                 </div>
-
-                <Link href="/checkout" className="btn-primary w-full flex items-center justify-center gap-2 text-base">
-                  Zur Kasse
-                  <ArrowRight size={18} />
-                </Link>
 
                 <Link href="/shop" className="block text-center text-sm text-slate-500 hover:text-slate-300 mt-3 transition-colors">
                   Weiter einkaufen
