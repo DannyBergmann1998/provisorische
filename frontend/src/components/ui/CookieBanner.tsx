@@ -21,7 +21,7 @@ export function CookieBanner() {
               Wir verwenden Cookies, um die Funktionalität der Website sicherzustellen und optionale
               Analysefunktionen zu ermöglichen. Notwendige Cookies werden immer geladen.{" "}
               <Link
-                href="/datenschutz"
+                href="/privacy"
                 className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
               >
                 Mehr erfahren

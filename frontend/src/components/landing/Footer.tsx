@@ -65,11 +65,10 @@ export function Footer() {
             <h4 className="font-semibold text-black dark:text-white mb-4">Rechtliches</h4>
             <ul className="space-y-2">
               {[
-                ["Impressum",     "/impressum"],
-                ["Datenschutz",   "/datenschutz"],
-                ["AGB",           "/agb"],
-                ["Widerruf",      "/widerruf"],
-                ["Cookie-Policy", "/cookies"],
+                ["Impressum",     "/imprint"],
+                ["Datenschutz",   "/privacy"],
+                ["AGB",           "/terms"],
+                ["Widerruf",      "/cancellation"],
               ].map(([label, href]) => (
                 <li key={label}>
                   <Link href={href} className="text-gray-600 dark:text-[#A0A0A0] hover:text-black dark:hover:text-white transition-colors text-sm">

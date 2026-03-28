@@ -181,7 +181,7 @@ export default function RepairPage() {
                     />
                     <span className="text-sm text-slate-400">
                       Ich stimme zu, dass mit der Reparatur vor Ablauf der Widerrufsfrist begonnen wird und ich mein Widerrufsrecht verliere.{" "}
-                      <a href="/widerruf" className="text-primary-400 hover:text-primary-300 underline">
+                      <a href="/cancellation" className="text-primary-400 hover:text-primary-300 underline">
                         (Mehr Info)
                       </a>
                     </span>
