@@ -1,114 +1,102 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Smartphone, Monitor, Gamepad2, Tablet, Battery, Zap, Droplets, Camera, HardDrive, Wifi } from "lucide-react";
-import { StaggerContainer, StaggerItem } from "@/components/motion";
+import { Smartphone, Monitor, Battery, Search } from "lucide-react";
 
 const services = [
   {
-    icon:     Smartphone,
-    title:    "Handy-Reparatur",
-    repairs:  ["Display & Touchscreen", "Akku-Tausch", "Kamera", "Ladeanschluss", "Wasserschaden", "Software-Probleme"],
-    brands:   "iPhone, Samsung, Huawei, Xiaomi & mehr",
-    price:    "ab 29 €",
+    icon: Smartphone,
+    title: "Smartphone Reparatur",
+    description:
+      "Display, Kamera, Lautsprecher, Ladebuchse – wir beheben alle gängigen Schäden schnell und fachgerecht.",
   },
   {
-    icon:     Monitor,
-    title:    "PC & Laptop",
-    repairs:  ["Display-Tausch", "Viren & Malware", "Windows-Neuinstallation", "Datenrettung", "Lüfter & Kühlung", "Mainboard"],
-    brands:   "Dell, HP, Lenovo, ASUS, Apple & mehr",
-    price:    "ab 49 €",
+    icon: Monitor,
+    title: "PC & Laptop Reparatur",
+    description:
+      "Ob Softwareproblem, defekte Hardware oder Systemausfall – wir bringen Ihren Computer zuverlässig zum Laufen.",
   },
   {
-    icon:     Gamepad2,
-    title:    "Konsolen",
-    repairs:  ["HDMI-Port", "Disc-Laufwerk", "Überhitzung", "Controller", "Software-Update", "Mainboard"],
-    brands:   "PlayStation, Xbox, Nintendo Switch",
-    price:    "ab 39 €",
+    icon: Battery,
+    title: "Display- & Akkutausch",
+    description:
+      "Original-Qualität oder Premium-Ersatzteile. Schnelle Austausche – oft noch am selben Tag.",
   },
   {
-    icon:     Tablet,
-    title:    "Tablets",
-    repairs:  ["Display-Tausch", "Akku-Tausch", "Lautsprecher", "Ladebuchse", "Kamera", "Gehäuse"],
-    brands:   "iPad, Samsung Tab, Huawei MatePad",
-    price:    "ab 39 €",
+    icon: Search,
+    title: "Fehlerdiagnose",
+    description:
+      "Kostenlose und sorgfältige Diagnose. Wir finden die Ursache, bevor wir mit der Reparatur beginnen.",
   },
 ];
 
-const features = [
-  { icon: Zap,       label: "Express-Service",  desc: "Oft fertig am selben Tag" },
-  { icon: Battery,   label: "Originale Teile",   desc: "Hochwertige Ersatzteile" },
-  { icon: Droplets,  label: "Wasserschäden",     desc: "Professionelle Behandlung" },
-  { icon: Camera,    label: "Kamera-Reparatur",  desc: "Für alle Modelle" },
-  { icon: HardDrive, label: "Datenrettung",      desc: "Auch bei defekten Geräten" },
-  { icon: Wifi,      label: "Software-Service",  desc: "Updates, Virenschutz" },
-];
+const containerVariants = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+const cardVariants = {
+  hidden: { opacity: 0, y: 28 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" as const } },
+};
 
 export function Services() {
   return (
-    <section id="services" className="section bg-white dark:bg-[#0A0A0A]">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block text-primary-600 dark:text-primary-400 text-sm font-semibold uppercase tracking-widest mb-3">
+    <section id="leistungen" className="py-24 lg:py-32 px-6 bg-white">
+      <div className="max-w-5xl mx-auto">
+        {/* Section Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: "easeOut" as const }}
+        >
+          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#0071e3] mb-3">
             Unsere Leistungen
-          </span>
-          <h2 className="text-4xl md:text-5xl font-semibold text-black dark:text-white mb-4">
-            Was wir reparieren
-          </h2>
-          <p className="text-gray-600 dark:text-[#A0A0A0] text-lg max-w-2xl mx-auto">
-            Professionelle Reparatur für alle gängigen Geräte – schnell, günstig und mit Garantie.
           </p>
-        </div>
+          <h2 className="text-[clamp(2rem,5vw,3rem)] font-bold tracking-[-0.02em] text-[#1d1d1f] leading-tight">
+            Alles aus einer Hand.
+          </h2>
+          <p className="mt-4 text-[17px] text-[#6e6e73] font-light max-w-md mx-auto leading-relaxed">
+            Von der Diagnose bis zur fertigen Reparatur – schnell, sauber, zuverlässig.
+          </p>
+        </motion.div>
 
-        {/* Service cards */}
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {services.map(({ icon: Icon, title, repairs, brands, price }) => (
-            <StaggerItem key={title}>
+        {/* Cards Grid */}
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:gap-5"
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-60px" }}
+        >
+          {services.map((service) => {
+            const Icon = service.icon;
+            return (
               <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="card-hover group"
+                key={service.title}
+                variants={cardVariants}
+                className="group bg-[#f5f5f7] hover:bg-white rounded-2xl p-7 border border-transparent hover:border-black/[0.08] hover:shadow-[0_4px_24px_rgba(0,0,0,0.08)] transition-all duration-300 cursor-default"
               >
-              <div className="w-10 h-10 bg-gray-100 dark:bg-[#1A1A1A] rounded-lg flex items-center justify-center mb-4 group-hover:bg-gray-200 dark:group-hover:bg-[#262626] transition-colors">
-                <Icon size={20} className="text-black dark:text-white" />
-              </div>
-              <h3 className="font-semibold text-black dark:text-white text-base mb-3">{title}</h3>
-              <ul className="space-y-1.5 mb-4">
-                {repairs.map((r) => (
-                  <li key={r} className="text-gray-600 dark:text-[#A0A0A0] text-sm flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 bg-primary-600 dark:bg-primary-400 rounded-full flex-shrink-0" />
-                    {r}
-                  </li>
-                ))}
-              </ul>
-              <div className="pt-3 border-t border-gray-200 dark:border-[#333333]">
-                <p className="text-xs text-gray-500 dark:text-gray-500 mb-1">{brands}</p>
-                <p className="text-sm font-semibold text-black dark:text-white">{price}</p>
-              </div>
-              </motion.div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+                {/* Icon */}
+                <div className="w-11 h-11 rounded-xl bg-white group-hover:bg-[#f0f7ff] border border-black/[0.06] flex items-center justify-center mb-5 transition-colors duration-300 shadow-[0_1px_4px_rgba(0,0,0,0.06)]">
+                  <Icon className="w-5 h-5 text-[#1d1d1f] group-hover:text-[#0071e3] transition-colors duration-300" strokeWidth={1.8} />
+                </div>
 
-        {/* Features grid */}
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {features.map(({ icon: Icon, label, desc }) => (
-            <StaggerItem key={label}>
-              <motion.div
-                whileHover={{ y: -2 }}
-                transition={{ duration: 0.2 }}
-                className="card text-center group hover:border-gray-300 dark:hover:border-[#404040] transition-colors"
-              >
-              <div className="w-10 h-10 bg-gray-100 dark:bg-[#1A1A1A] rounded-lg flex items-center justify-center mx-auto mb-3 group-hover:bg-gray-200 dark:group-hover:bg-[#262626] transition-colors">
-                <Icon size={18} className="text-black dark:text-white" />
-              </div>
-              <h4 className="text-black dark:text-white text-sm font-semibold mb-1">{label}</h4>
-              <p className="text-gray-500 dark:text-gray-500 text-xs">{desc}</p>
+                {/* Text */}
+                <h3 className="text-[17px] font-semibold text-[#1d1d1f] mb-2 leading-snug">
+                  {service.title}
+                </h3>
+                <p className="text-[14px] text-[#6e6e73] leading-relaxed">
+                  {service.description}
+                </p>
               </motion.div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+            );
+          })}
+        </motion.div>
       </div>
     </section>
   );

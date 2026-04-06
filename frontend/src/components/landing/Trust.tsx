@@ -1,91 +1,80 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Shield, Award, Clock, ThumbsUp, Users, Repeat } from "lucide-react";
-import { StaggerContainer, StaggerItem } from "@/components/motion";
+import { Zap, EuroIcon, UserCheck, ShieldCheck } from "lucide-react";
 
-const stats = [
-  { value: "2.000+", label: "Reparaturen",    icon: Repeat },
-  { value: "98%",    label: "Zufriedenheit",  icon: ThumbsUp },
-  { value: "5+",     label: "Jahre Erfahrung", icon: Award },
-  { value: "500+",   label: "Stammkunden",    icon: Users },
-];
-
-const trustPoints = [
+const advantages = [
   {
-    icon:  Shield,
-    title: "6 Monate Garantie",
-    desc:  "Auf alle Reparaturen geben wir 6 Monate Garantie. Qualität, die überzeugt.",
+    icon: Zap,
+    title: "Schnelle Bearbeitung",
+    description: "Viele Reparaturen erledigen wir noch am selben Tag. Keine langen Wartezeiten.",
   },
   {
-    icon:  Award,
-    title: "Erfahrener Fachbetrieb",
-    desc:  "Mit über 5 Jahren Erfahrung und ausgebildetem Personal für alle gängigen Geräte und Marken.",
+    icon: EuroIcon,
+    title: "Transparente Preise",
+    description: "Klare Festpreise ohne versteckte Kosten. Angebot immer vor der Reparatur.",
   },
   {
-    icon:  Clock,
-    title: "Schnelle Abwicklung",
-    desc:  "Viele Reparaturen werden noch am selben Tag abgeschlossen. Express-Service verfügbar.",
+    icon: UserCheck,
+    title: "Persönlicher Service",
+    description: "Direkter Ansprechpartner, keine anonymen Callcenter. Wir nehmen uns Zeit für Sie.",
   },
   {
-    icon:  ThumbsUp,
-    title: "Kostenloser KVA",
-    desc:  "Du erhältst einen kostenlosen Kostenvoranschlag. Keine Reparatur ohne deine Zustimmung.",
+    icon: ShieldCheck,
+    title: "Erfahrung & Zuverlässigkeit",
+    description: "Hunderte erfolgreiche Reparaturen. Qualität die überzeugt und Garantie auf Ersatzteile.",
   },
 ];
 
 export function Trust() {
   return (
-    <section className="section bg-white dark:bg-[#0A0A0A] transition-colors duration-300">
-      <div className="max-w-7xl mx-auto px-6">
-        {/* Stats */}
-        <StaggerContainer className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-          {stats.map(({ value, label, icon: Icon }) => (
-            <StaggerItem key={label}>
-              <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="card text-center group"
-              >
-              <div className="w-10 h-10 bg-gray-100 dark:bg-[#151515] rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:bg-gray-200 dark:group-hover:bg-[#262626] transition-colors">
-                <Icon size={20} className="text-black dark:text-white" />
-              </div>
-              <p className="text-3xl md:text-4xl font-semibold text-black dark:text-white mb-1">{value}</p>
-              <p className="text-gray-600 dark:text-[#A0A0A0] text-sm">{label}</p>
-              </motion.div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
-
-        {/* Trust points */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-semibold text-black dark:text-white mb-4">
-            Warum wir?
-          </h2>
-          <p className="text-gray-600 dark:text-[#A0A0A0] max-w-xl mx-auto">
-            Vertrauen ist alles – deshalb setzen wir auf Transparenz, Qualität und faire Preise.
+    <section id="vorteile" className="py-24 lg:py-32 px-6 bg-[#f5f5f7]">
+      <div className="max-w-5xl mx-auto">
+        {/* Header */}
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#0071e3] mb-3">
+            Warum wir
           </p>
-        </div>
+          <h2 className="text-[clamp(2rem,5vw,3rem)] font-bold tracking-[-0.02em] text-[#1d1d1f] leading-tight">
+            Ihr Gerät. Unsere Verantwortung.
+          </h2>
+          <p className="mt-4 text-[17px] text-[#6e6e73] font-light max-w-md mx-auto leading-relaxed">
+            Wir behandeln jedes Gerät so, als wäre es unser eigenes.
+          </p>
+        </motion.div>
 
-        <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {trustPoints.map(({ icon: Icon, title, desc }) => (
-            <StaggerItem key={title}>
+        {/* Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {advantages.map((adv, i) => {
+            const Icon = adv.icon;
+            return (
               <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.2 }}
-                className="card-hover flex gap-5"
+                key={adv.title}
+                className="bg-white rounded-2xl p-6 border border-black/[0.05] hover:shadow-[0_4px_24px_rgba(0,0,0,0.08)] transition-all duration-300"
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.55, delay: i * 0.08, ease: [0.25, 0.1, 0.25, 1] }}
               >
-              <div className="w-12 h-12 bg-gray-100 dark:bg-[#151515] rounded-lg flex-shrink-0 flex items-center justify-center group-hover:bg-gray-200 dark:group-hover:bg-[#262626] transition-colors">
-                <Icon size={20} className="text-black dark:text-white" />
-              </div>
-              <div>
-                <h3 className="text-base font-semibold text-black dark:text-white mb-2">{title}</h3>
-                <p className="text-gray-600 dark:text-[#A0A0A0] text-sm leading-relaxed">{desc}</p>
-              </div>
+                <div className="w-10 h-10 rounded-xl bg-[#f0f7ff] flex items-center justify-center mb-4">
+                  <Icon className="w-5 h-5 text-[#0071e3]" strokeWidth={1.8} />
+                </div>
+                <h3 className="text-[15px] font-semibold text-[#1d1d1f] mb-2 leading-snug">
+                  {adv.title}
+                </h3>
+                <p className="text-[13px] text-[#6e6e73] leading-relaxed">
+                  {adv.description}
+                </p>
               </motion.div>
-            </StaggerItem>
-          ))}
-        </StaggerContainer>
+            );
+          })}
+        </div>
       </div>
     </section>
   );

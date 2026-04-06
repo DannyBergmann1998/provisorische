@@ -1,19 +1,14 @@
 import { Metadata } from "next";
-import { Navbar }           from "@/components/ui/Navbar";
-import { Hero }             from "@/components/landing/Hero";
-import { TrustBar }         from "@/components/landing/TrustBar";
-import { Services }         from "@/components/landing/Services";
-import { RepairShopSplit }  from "@/components/landing/RepairShopSplit";
-import { ProblemSection }   from "@/components/landing/ProblemSection";
-import { HowItWorks }       from "@/components/landing/HowItWorks";
-import { AboutSection }     from "@/components/sections/AboutSection";
-import { Testimonials }     from "@/components/landing/Testimonials";
-import { CTASection }       from "@/components/landing/CTASection";
-import { Contact }          from "@/components/landing/Contact";
-import { Footer }           from "@/components/landing/Footer";
+import { Navbar }   from "@/components/ui/Navbar";
+import { Hero }     from "@/sections/Hero";
+import { Notice }   from "@/sections/Notice";
+import { Services } from "@/sections/Services";
+import { Download } from "@/sections/Download";
+import { Trust }    from "@/sections/Trust";
+import { Footer }   from "@/sections/Footer";
 
 export const metadata: Metadata = {
-  title: "Handy & PC Service – Reparatur, Ankauf & Online-Shop",
+  title: "Handy & PC Service – Schnelle Reparaturen. Faire Preise.",
 };
 
 export default function HomePage() {
@@ -22,15 +17,10 @@ export default function HomePage() {
       <Navbar />
       <main>
         <Hero />
-        <TrustBar />
+        <Notice />
         <Services />
-        <RepairShopSplit />
-        <ProblemSection />
-        <HowItWorks />
-        <AboutSection />
-        <Testimonials />
-        <CTASection />
-        <Contact />
+        <Download />
+        <Trust />
       </main>
       <Footer />
     </>

@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reparaturauftrag – Handy &amp; PC Service</title>
+  <style>
+    /* ── Reset ─────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Page / Print setup ─────────────────────────────────────────────── */
+    @page {
+      size: A4 portrait;
+      margin: 18mm 20mm 18mm 20mm;
+    }
+
+    html, body {
+      width: 210mm;
+      min-height: 297mm;
+      background: #fff;
+      color: #111;
+      font-family: -apple-system, 'Helvetica Neue', Arial, sans-serif;
+      font-size: 10pt;
+      line-height: 1.5;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    /* ── Screen wrapper (centering on screen) ──────────────────────────── */
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      padding: 18mm 20mm;
+    }
+
+    @media screen {
+      body { background: #e5e5e5; }
+      .page {
+        background: #fff;
+        box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+        margin: 24px auto;
+      }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { padding: 0; }
+      .no-print { display: none !important; }
+    }
+
+    /* ── Typography ─────────────────────────────────────────────────────── */
+    h1  { font-size: 22pt; font-weight: 800; letter-spacing: -0.03em; color: #0A0A0A; }
+    h2  { font-size: 8.5pt; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #555; }
+
+    /* ── Header ─────────────────────────────────────────────────────────── */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      padding-bottom: 14pt;
+      border-bottom: 2px solid #0A0A0A;
+      margin-bottom: 22pt;
+    }
+
+    .header-brand { display: flex; flex-direction: column; gap: 4pt; }
+    .header-brand .company { font-size: 9pt; color: #666; margin-top: 4pt; }
+    .header-brand .contact { font-size: 8pt; color: #888; }
+
+    .header-logo { width: 48pt; height: 48pt; flex-shrink: 0; }
+
+    /* ── Section ─────────────────────────────────────────────────────────── */
+    .section { margin-bottom: 20pt; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 8pt;
+      margin-bottom: 12pt;
+    }
+
+    .section-num {
+      font-size: 8pt;
+      font-family: 'Courier New', monospace;
+      color: #aaa;
+    }
+
+    .section-title-line {
+      flex: 1;
+      height: 1px;
+      background: #ddd;
+    }
+
+    /* ── Field row ────────────────────────────────────────────────────────── */
+    .field-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 10pt;
+      margin-bottom: 9pt;
+    }
+
+    .field-label {
+      font-size: 8pt;
+      color: #777;
+      width: 78pt;
+      flex-shrink: 0;
+      padding-bottom: 2pt;
+    }
+
+    .field-line {
+      flex: 1;
+      border-bottom: 1px solid #bbb;
+      height: 17pt;
+    }
+
+    /* ── Two-column grid ──────────────────────────────────────────────────── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18pt; }
+
+    /* ── Checkbox fields ─────────────────────────────────────────────────── */
+    .checkbox-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6pt 16pt;
+      margin-bottom: 8pt;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: center;
+      gap: 5pt;
+      font-size: 9pt;
+      color: #333;
+    }
+
+    .checkbox-box {
+      width: 10pt;
+      height: 10pt;
+      border: 1px solid #aaa;
+      border-radius: 2pt;
+      flex-shrink: 0;
+    }
+
+    /* ── Textarea box ─────────────────────────────────────────────────────── */
+    .text-box {
+      width: 100%;
+      border: 1px solid #bbb;
+      border-radius: 3pt;
+      height: 56pt;
+      margin-top: 6pt;
+    }
+
+    .field-hint {
+      font-size: 8pt;
+      color: #aaa;
+      margin-bottom: 4pt;
+    }
+
+    /* ── Signature row ────────────────────────────────────────────────────── */
+    .sig-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 18pt;
+      margin-top: 14pt;
+    }
+
+    .sig-block { display: flex; flex-direction: column; gap: 18pt; }
+    .sig-line  { border-bottom: 1px solid #bbb; padding-top: 20pt; }
+
+    .sig-label {
+      font-size: 7.5pt;
+      color: #aaa;
+      text-align: center;
+      margin-top: 3pt;
+    }
+
+    /* ── Notice box ───────────────────────────────────────────────────────── */
+    .notice {
+      border: 1px solid #e0e0e0;
+      border-radius: 4pt;
+      padding: 8pt 10pt;
+      background: #fafafa;
+      margin-bottom: 20pt;
+    }
+
+    .notice p {
+      font-size: 8pt;
+      color: #777;
+      line-height: 1.55;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────────────────── */
+    .doc-footer {
+      border-top: 1px solid #e0e0e0;
+      padding-top: 8pt;
+      margin-top: 20pt;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .doc-footer p {
+      font-size: 7.5pt;
+      color: #aaa;
+    }
+
+    /* ── Print-button (screen only) ────────────────────────────────────────── */
+    .print-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 24px;
+      z-index: 999;
+    }
+
+    .print-bar p {
+      font-size: 13px;
+      color: #A1A1AA;
+    }
+
+    .print-btn {
+      background: #0A84FF;
+      color: #fff;
+      border: none;
+      border-radius: 20px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .print-btn:hover { opacity: 0.88; }
+
+    @media print { .print-bar { display: none; } }
+  </style>
+</head>
+<body>
+
+  <!-- Print / Save bar (visible on screen) -->
+  <div class="print-bar no-print">
+    <p>Als PDF speichern → Drucken → „Als PDF sichern"</p>
+    <button class="print-btn" onclick="window.print()">Als PDF speichern</button>
+  </div>
+
+  <div class="page">
+
+    <!-- ── Header ─────────────────────────────────────────────────────── -->
+    <div class="header">
+      <div class="header-brand">
+        <h1>Reparaturauftrag</h1>
+        <p class="company">Handy &amp; PC Service</p>
+        <p class="contact">handyundpcservice@gmail.com &nbsp;·&nbsp; +49 1778344812</p>
+      </div>
+
+      <!-- Inline logo SVG -->
+      <svg class="header-logo" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+        <defs>
+          <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#4CAF50"/>
+            <stop offset="100%" stop-color="#388E3C"/>
+          </linearGradient>
+          <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#2196F3"/>
+            <stop offset="100%" stop-color="#1565C0"/>
+          </linearGradient>
+          <linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%"   stop-color="#FF9800"/>
+            <stop offset="100%" stop-color="#E65100"/>
+          </linearGradient>
+        </defs>
+        <rect x="80"  y="140" width="160" height="200" rx="28" fill="url(#g1)"/>
+        <rect x="220" y="80"  width="160" height="200" rx="28" fill="url(#g2)"/>
+        <rect x="150" y="260" width="160" height="200" rx="28" fill="url(#g3)"/>
+        <ellipse cx="128" cy="172" rx="24" ry="32" fill="white" opacity="0.18"/>
+        <ellipse cx="268" cy="122" rx="24" ry="32" fill="white" opacity="0.18"/>
+        <ellipse cx="198" cy="298" rx="24" ry="32" fill="white" opacity="0.18"/>
+      </svg>
+    </div>
+
+    <!-- ── 01 · Kundendaten ───────────────────────────────────────────── -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <div class="section-title-line"></div>
+        <h2>Kundendaten</h2>
+        <div class="section-title-line"></div>
+      </div>
+
+      <div class="field-row">
+        <span class="field-label">Name</span>
+        <div class="field-line"></div>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Adresse</span>
+        <div class="field-line"></div>
+      </div>
+      <div class="grid-2">
+        <div class="field-row">
+          <span class="field-label">Telefon</span>
+          <div class="field-line"></div>
+        </div>
+        <div class="field-row">
+          <span class="field-label">E-Mail</span>
+          <div class="field-line"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 02 · Gerätedaten ───────────────────────────────────────────── -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <div class="section-title-line"></div>
+        <h2>Gerätedaten</h2>
+        <div class="section-title-line"></div>
+      </div>
+
+      <div style="margin-bottom:8pt">
+        <p class="field-hint">Gerätetyp</p>
+        <div class="checkbox-grid">
+          <div class="checkbox-item"><div class="checkbox-box"></div> Smartphone</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> Laptop</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> Tablet</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> PC / Desktop</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> Sonstiges</div>
+        </div>
+      </div>
+
+      <div class="field-row">
+        <span class="field-label">Marke</span>
+        <div class="field-line"></div>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Modell</span>
+        <div class="field-line"></div>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Seriennr. / IMEI</span>
+        <div class="field-line"></div>
+      </div>
+    </div>
+
+    <!-- ── 03 · Fehlerbeschreibung ────────────────────────────────────── -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <div class="section-title-line"></div>
+        <h2>Fehlerbeschreibung</h2>
+        <div class="section-title-line"></div>
+      </div>
+
+      <div style="margin-bottom:8pt">
+        <p class="field-hint">Problem (Mehrfachauswahl möglich)</p>
+        <div class="checkbox-grid">
+          <div class="checkbox-item"><div class="checkbox-box"></div> Display beschädigt</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> Akku defekt</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> Wasserschaden</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> Startet nicht</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> Ladeproblem</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> Softwarefehler</div>
+          <div class="checkbox-item"><div class="checkbox-box"></div> Sonstiges:</div>
+        </div>
+      </div>
+
+      <p class="field-hint">Detaillierte Beschreibung</p>
+      <div class="text-box"></div>
+    </div>
+
+    <!-- ── 04 · Zusatz ────────────────────────────────────────────────── -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">04</span>
+        <div class="section-title-line"></div>
+        <h2>Zubehör &amp; Hinweise</h2>
+        <div class="section-title-line"></div>
+      </div>
+
+      <div class="field-row">
+        <span class="field-label">Zubehör beigelegt</span>
+        <div class="field-line"></div>
+      </div>
+      <div class="field-row">
+        <span class="field-label">Passcode / PIN</span>
+        <div class="field-line"></div>
+      </div>
+    </div>
+
+    <!-- ── Hinweis-Box ────────────────────────────────────────────────── -->
+    <div class="notice">
+      <p>
+        <strong>Hinweise:</strong> Bei Wasserschäden kann keine Garantie übernommen werden.
+        Datenverlust ist möglich — für verlorene Daten wird keine Haftung übernommen.
+        Nicht abgeholte Geräte werden nach 30 Tagen kostenpflichtig eingelagert.
+      </p>
+    </div>
+
+    <!-- ── 05 · Unterschrift ─────────────────────────────────────────── -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">05</span>
+        <div class="section-title-line"></div>
+        <h2>Unterschrift &amp; Freigabe</h2>
+        <div class="section-title-line"></div>
+      </div>
+
+      <div style="margin-bottom:10pt">
+        <div class="checkbox-item" style="font-size:9pt; color:#333; gap:6pt">
+          <div class="checkbox-box"></div>
+          Ich habe die Hinweise gelesen und stimme der Reparatur zu.
+        </div>
+      </div>
+
+      <div class="sig-row">
+        <div class="sig-block">
+          <div>
+            <div class="sig-line"></div>
+            <p class="sig-label">Datum</p>
+          </div>
+        </div>
+        <div class="sig-block">
+          <div>
+            <div class="sig-line"></div>
+            <p class="sig-label">Unterschrift Kunde</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Document footer ───────────────────────────────────────────── -->
+    <div class="doc-footer">
+      <p>Handy &amp; PC Service &nbsp;·&nbsp; handyundpcservice@gmail.com &nbsp;·&nbsp; +49 1778344812</p>
+      <p>Stand: 2026</p>
+    </div>
+
+  </div><!-- /page -->
+
+</body>
+</html>

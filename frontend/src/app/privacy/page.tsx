@@ -1,184 +1,218 @@
 import { Metadata } from "next";
-import { Navbar } from "@/components/ui/Navbar";
-import { Footer } from "@/components/landing/Footer";
-import { Shield, Mail, Phone, Lock, Eye, Trash2 } from "lucide-react";
+import { Navbar }   from "@/components/ui/Navbar";
+import { Footer }   from "@/sections/Footer";
 
-export const metadata: Metadata = { title: "Datenschutzerklärung – Handy & PC Service" };
+export const metadata: Metadata = {
+  title:  "Datenschutzerklärung – Handy & PC Service",
+  robots: "noindex",
+};
+
+const sections = [
+  {
+    id:    "allgemein",
+    label: "01",
+    title: "Allgemeine Hinweise",
+    content: (
+      <p className="text-[15px] leading-relaxed" style={{ color: "var(--text-2)" }}>
+        Der Schutz Ihrer persönlichen Daten ist uns wichtig. Diese Datenschutzerklärung
+        informiert Sie darüber, welche Daten wir erheben und wie wir sie verwenden.
+      </p>
+    ),
+  },
+  {
+    id:    "datenerfassung",
+    label: "02",
+    title: "Datenerfassung auf dieser Website",
+    content: (
+      <div className="space-y-4">
+        <p className="text-[15px] font-medium" style={{ color: "var(--text)" }}>
+          Server-Log-Dateien
+        </p>
+        <p className="text-[15px] leading-relaxed" style={{ color: "var(--text-2)" }}>
+          Der Provider der Seiten erhebt und speichert automatisch Informationen in
+          sogenannten Server-Log-Dateien. Dies sind:
+        </p>
+        <ul className="space-y-2 pl-4" style={{ borderLeft: "2px solid var(--border-2)" }}>
+          {[
+            "Browsertyp und Browserversion",
+            "Verwendetes Betriebssystem",
+            "Referrer URL",
+            "Hostname des zugreifenden Rechners",
+            "Uhrzeit der Serveranfrage",
+            "IP-Adresse",
+          ].map((item) => (
+            <li
+              key={item}
+              className="text-[14px] pl-4"
+              style={{ color: "var(--text-2)" }}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+        <p className="text-[15px] leading-relaxed" style={{ color: "var(--text-3)" }}>
+          Diese Daten sind nicht bestimmten Personen zuordenbar.
+        </p>
+      </div>
+    ),
+  },
+  {
+    id:    "kontakt",
+    label: "03",
+    title: "Kontaktaufnahme",
+    content: (
+      <p className="text-[15px] leading-relaxed" style={{ color: "var(--text-2)" }}>
+        Wenn Sie uns per Telefon oder E-Mail kontaktieren, werden Ihre Angaben zur
+        Bearbeitung der Anfrage gespeichert.
+      </p>
+    ),
+  },
+  {
+    id:    "cookies",
+    label: "04",
+    title: "Cookies",
+    content: (
+      <p className="text-[15px] leading-relaxed" style={{ color: "var(--text-2)" }}>
+        Diese Website kann Cookies verwenden. Cookies richten auf Ihrem Rechner keinen
+        Schaden an und enthalten keine Viren.
+      </p>
+    ),
+  },
+  {
+    id:    "rechte",
+    label: "05",
+    title: "Ihre Rechte",
+    content: (
+      <div className="space-y-3">
+        <p className="text-[15px] leading-relaxed" style={{ color: "var(--text-2)" }}>
+          Sie haben jederzeit das Recht auf:
+        </p>
+        <ul className="space-y-2 pl-4" style={{ borderLeft: "2px solid var(--border-2)" }}>
+          {[
+            "Auskunft über Ihre gespeicherten Daten",
+            "Berichtigung oder Löschung",
+            "Einschränkung der Verarbeitung",
+          ].map((item) => (
+            <li
+              key={item}
+              className="text-[14px] pl-4"
+              style={{ color: "var(--text-2)" }}
+            >
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ),
+  },
+  {
+    id:    "hosting",
+    label: "06",
+    title: "Hosting",
+    content: (
+      <p className="text-[15px] leading-relaxed" style={{ color: "var(--text-2)" }}>
+        Die Website wird bei einem externen Dienstleister gehostet. Personenbezogene
+        Daten werden auf den Servern des Hosters gespeichert.
+      </p>
+    ),
+  },
+  {
+    id:    "ssl",
+    label: "07",
+    title: "SSL-/TLS-Verschlüsselung",
+    content: (
+      <p className="text-[15px] leading-relaxed" style={{ color: "var(--text-2)" }}>
+        Diese Seite nutzt aus Sicherheitsgründen eine SSL- bzw. TLS-Verschlüsselung.
+      </p>
+    ),
+  },
+];
 
 export default function DatenschutzPage() {
-  const sections = [
-    {
-      id: "verantwortlicher",
-      title: "1. Verantwortlicher",
-      icon: Shield,
-      content: [
-        "Verantwortlich für die Datenverarbeitung auf dieser Website ist:",
-        "",
-        "Danny Bergmann",
-        "handyundpcservice",
-        "Telefon: 017668917854",
-        "E-Mail: info@handyundpcservice.de",
-      ],
-    },
-    {
-      id: "datenerhebung",
-      title: "2. Erhebung und Speicherung personenbezogener Daten beim Besuch der Website",
-      icon: Eye,
-      content: [
-        "Beim Aufrufen dieser Website werden automatisch Informationen durch den Hosting-Anbieter erfasst und in sogenannten Server-Logfiles gespeichert. Dazu gehören:",
-        "",
-        "• IP-Adresse",
-        "• Datum und Uhrzeit der Anfrage",
-        "• Browsertyp und Version",
-        "• Betriebssystem",
-        "• Referrer-URL",
-        "",
-        "Diese Daten dienen ausschließlich der Sicherstellung eines störungsfreien Betriebs der Website.",
-        "",
-        "Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO",
-      ],
-    },
-    {
-      id: "kontakt",
-      title: "3. Kontaktaufnahme",
-      icon: Mail,
-      content: [
-        "Wenn du uns per E-Mail oder Kontaktformular kontaktierst, werden deine Angaben zur Bearbeitung deiner Anfrage gespeichert.",
-        "",
-        "Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO",
-      ],
-    },
-    {
-      id: "kundendaten",
-      title: "4. Verarbeitung von Kundendaten (Ankauf / Reparatur)",
-      icon: Lock,
-      content: [
-        "Im Rahmen unserer Dienstleistungen verarbeiten wir folgende Daten:",
-        "",
-        "• Name",
-        "• Telefonnummer",
-        "• E-Mail-Adresse",
-        "• Gerätedaten (z. B. Modell, IMEI, Zustand)",
-        "",
-        "Diese Daten sind zur Vertragserfüllung erforderlich.",
-        "",
-        "Rechtsgrundlage: Art. 6 Abs. 1 lit. b DSGVO",
-      ],
-    },
-    {
-      id: "hosting",
-      title: "5. Hosting",
-      icon: Shield,
-      content: [
-        "Diese Website wird bei einem externen Hosting-Anbieter betrieben. Dabei können personenbezogene Daten auf den Servern des Anbieters verarbeitet werden.",
-        "",
-        "Rechtsgrundlage: Art. 6 Abs. 1 lit. f DSGVO",
-      ],
-    },
-    {
-      id: "cookies",
-      title: "6. Cookies",
-      icon: Lock,
-      content: [
-        "Diese Website verwendet technisch notwendige Cookies zur Sicherstellung der Funktionalität.",
-      ],
-    },
-    {
-      id: "rechte",
-      title: "7. Deine Rechte",
-      icon: Eye,
-      content: [
-        "Du hast das Recht auf:",
-        "",
-        "• Auskunft (Art. 15 DSGVO)",
-        "• Berichtigung (Art. 16 DSGVO)",
-        "• Löschung (Art. 17 DSGVO)",
-        "• Einschränkung (Art. 18 DSGVO)",
-        "• Widerspruch (Art. 21 DSGVO)",
-      ],
-    },
-    {
-      id: "kontakt-datenschutz",
-      title: "8. Kontakt Datenschutz",
-      icon: Mail,
-      content: [
-        "Bei Fragen kannst du dich an uns wenden:",
-        "",
-        "E-Mail: info@handyundpcservice.de",
-      ],
-    },
-    {
-      id: "ssl",
-      title: "9. SSL- bzw. TLS-Verschlüsselung",
-      icon: Shield,
-      content: [
-        "Diese Website nutzt SSL- bzw. TLS-Verschlüsselung zur Sicherung aller Datenübertragungen.",
-      ],
-    },
-  ];
-
   return (
     <>
       <Navbar />
-      <main className="min-h-screen pt-24 pb-16">
-        <div className="container-custom">
-          <div className="max-w-3xl mx-auto mb-16">
-            <div className="flex items-center gap-3 mb-4">
-              <Shield size={32} className="text-primary-400" />
-              <h1 className="text-4xl md:text-5xl font-black text-white">Datenschutzerklärung</h1>
-            </div>
-            <p className="text-slate-400 text-lg">
-              Wir nehmen deinen Datenschutz ernst. Diese Erklärung informiert dich darüber, wie wir deine persönlichen Daten verarbeiten.
+
+      <main className="min-h-screen" style={{ background: "var(--bg)" }}>
+        <div className="max-w-2xl mx-auto px-6 pt-32 pb-24">
+
+          {/* Header */}
+          <div className="mb-16">
+            <p className="text-label mb-4" style={{ color: "var(--text-3)" }}>
+              Rechtliches
+            </p>
+            <h1 className="text-heading" style={{ color: "var(--text)" }}>
+              Datenschutz&shy;erklärung
+            </h1>
+            <p className="mt-3 text-[14px]" style={{ color: "var(--text-3)" }}>
+              Stand: April 2026
             </p>
           </div>
 
-          <div className="max-w-3xl mx-auto mb-16">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-              {sections.map(({ id, title }) => (
-                <a
-                  key={id}
-                  href={`#${id}`}
-                  className="text-sm px-3 py-2 rounded-lg border border-slate-700 text-slate-400 hover:text-primary-400 hover:border-primary-500/50 transition-colors"
-                >
-                  {title.split(". ")[0]}
-                </a>
-              ))}
-            </div>
-          </div>
+          {/* Sections */}
+          <div className="space-y-12">
+            {sections.map((s) => (
+              <section key={s.id} id={s.id} className="scroll-mt-24">
+                <div className="flex items-baseline gap-3 mb-4">
+                  <span
+                    className="text-[11px] font-mono px-2 py-0.5 rounded flex-shrink-0"
+                    style={{
+                      color:      "var(--text-3)",
+                      background: "var(--surface-2)",
+                      border:     "1px solid var(--border)",
+                    }}
+                  >
+                    {s.label}
+                  </span>
+                  <h2
+                    className="text-[17px] font-semibold"
+                    style={{ color: "var(--text)", letterSpacing: "-0.01em" }}
+                  >
+                    {s.title}
+                  </h2>
+                </div>
 
-          <div className="max-w-3xl mx-auto space-y-12">
-            {sections.map(({ id, title, icon: Icon, content }) => (
-              <section key={id} id={id} className="scroll-mt-24">
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="p-3 bg-primary-500/10 rounded-lg flex-shrink-0 mt-1">
-                    <Icon size={24} className="text-primary-400" />
-                  </div>
-                  <h2 className="text-2xl font-black text-white">{title}</h2>
-                </div>
-                <div className="ml-16 space-y-2 text-slate-400">
-                  {content.map((line, i) => (
-                    <p key={i} className={line === "" ? "h-2" : ""}>
-                      {line}
-                    </p>
-                  ))}
-                </div>
+                <div className="mb-5" style={{ borderTop: "1px solid var(--border)" }} />
+
+                {s.content}
               </section>
             ))}
           </div>
 
-          <div className="max-w-3xl mx-auto mt-16 pt-16 border-t border-slate-700">
-            <div className="bg-slate-800/30 border border-slate-700 rounded-xl p-6">
-              <h3 className="text-white font-semibold mb-3 flex items-center gap-2">
-                <Shield size={18} className="text-primary-400" />
-                Deine Daten sind sicher
-              </h3>
-              <p className="text-slate-400 text-sm">
-                Wir verwenden modernste Sicherheitsmaßnahmen zum Schutz deiner Daten. Solltest du noch Fragen haben, kontaktiere uns gerne jederzeit.
-              </p>
-            </div>
+          {/* Contact note */}
+          <div
+            className="mt-12 rounded-2xl p-6"
+            style={{
+              background: "var(--surface)",
+              border:     "1px solid var(--border)",
+            }}
+          >
+            <p className="text-[13px] leading-relaxed" style={{ color: "var(--text-3)" }}>
+              Bei Fragen zum Datenschutz wenden Sie sich an:{" "}
+              <a
+                href="mailto:handyundpcservice@gmail.com"
+                className="hover:underline transition-colors"
+                style={{ color: "var(--accent)" }}
+              >
+                handyundpcservice@gmail.com
+              </a>
+            </p>
           </div>
+
+          {/* Back link */}
+          <div className="mt-10 pt-8" style={{ borderTop: "1px solid var(--border)" }}>
+            <a
+              href="/"
+              className="text-[14px] transition-colors duration-150 hover:underline"
+              style={{ color: "var(--text-3)" }}
+            >
+              ← Zurück zur Startseite
+            </a>
+          </div>
+
         </div>
       </main>
+
       <Footer />
     </>
   );

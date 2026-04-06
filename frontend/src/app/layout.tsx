@@ -1,45 +1,53 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import { Providers } from "./providers";
 
 export const metadata: Metadata = {
-  title: {
-    default:  "Handy & PC Service – Reparatur, Ankauf & Shop",
-    template: "%s | Handy & PC Service",
-  },
+  title: "Handy & PC Service – Schnelle Reparaturen. Faire Preise.",
   description:
-    "Professionelle Reparatur für Handys, PCs und Konsolen. Ankauf gebrauchter Geräte. Online-Shop für Smartphones und Zubehör. Schnell, günstig, zuverlässig.",
-  keywords:   ["Handy Reparatur", "PC Reparatur", "Smartphone Ankauf", "iPhone Reparatur", "Samsung Reparatur"],
+    "Professioneller Reparaturservice für Smartphones, PCs und Laptops. Persönlich, transparent und zuverlässig.",
+  keywords: [
+    "Handy Reparatur",
+    "PC Reparatur",
+    "Laptop Reparatur",
+    "Smartphone Display tauschen",
+    "Akku wechseln",
+  ],
   authors:    [{ name: "Handy & PC Service" }],
   robots:     "index, follow",
+  icons: {
+    icon:             "/logo.png",
+    apple:            "/logo.png",
+    shortcut:         "/logo.png",
+  },
   openGraph: {
     type:        "website",
     locale:      "de_DE",
     siteName:    "Handy & PC Service",
-    title:       "Handy & PC Service",
-    description: "Professionelle Reparatur, Ankauf und Online-Shop",
+    title:       "Handy & PC Service – Schnelle Reparaturen. Faire Preise.",
+    description: "Professioneller Reparaturservice für Smartphones, PCs und Laptops.",
+    images:      [{ url: "/logo.png", width: 321, height: 321 }],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: "#ffffff",
+  themeColor: "#0A0A0A",
   width:      "device-width",
   initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="de" suppressHydrationWarning>
+    <html lang="de" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100;0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800;0,14..32,900&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body className="min-h-screen bg-white dark:bg-[#0A0A0A] text-black dark:text-white overflow-x-hidden transition-colors duration-300">
-        <Providers>{children}</Providers>
+      <body className="min-h-screen overflow-x-hidden antialiased" style={{ background: "var(--bg)", color: "var(--text)" }}>
+        {children}
       </body>
     </html>
   );

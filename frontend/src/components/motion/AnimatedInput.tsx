@@ -30,22 +30,18 @@ export function AnimatedInput({
           {label}
         </label>
       )}
+      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
       <motion.input
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
         animate={
           isFocused
-            ? {
-                boxShadow:
-                  "0 0 0 3px rgba(37, 99, 235, 0.1), 0 0 0 1px rgba(37, 99, 235, 0.5)",
-              }
-            : {
-                boxShadow: "0 0 0 0 rgba(37, 99, 235, 0)",
-              }
+            ? { boxShadow: "0 0 0 3px rgba(37, 99, 235, 0.1), 0 0 0 1px rgba(37, 99, 235, 0.5)" }
+            : { boxShadow: "0 0 0 0 rgba(37, 99, 235, 0)" }
         }
         transition={{ duration: 0.2 }}
         className={`input-field transition-shadow ${className}`}
-        {...props}
+        {...(props as any)}
       />
       {error && (
         <motion.p

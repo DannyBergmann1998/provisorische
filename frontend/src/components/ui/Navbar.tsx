@@ -1,133 +1,135 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { Menu, X, ShoppingCart } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useCartStore } from "@/store/cartStore";
-import { DarkModeToggle } from "./DarkModeToggle";
-
-const navLinks = [
-  { href: "/repair",  label: "Reparatur" },
-  { href: "/buyback", label: "Ankauf" },
-  { href: "/shop",    label: "Shop" },
-];
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { AnimatePresence, motion } from "framer-motion";
 
 export function Navbar() {
-  const [isOpen,   setIsOpen]   = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
-  const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
+  const [scrolled, setScrolled]     = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    const handler = () => setScrolled(window.scrollY > 32);
+    window.addEventListener("scroll", handler, { passive: true });
+    return () => window.removeEventListener("scroll", handler);
   }, []);
 
-  useEffect(() => { setIsOpen(false); }, [pathname]);
+  const goto = (id: string) => {
+    setMobileOpen(false);
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <nav
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+    <motion.header
+      initial={{ y: -64, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-white/95 dark:bg-[#0A0A0A]/95 backdrop-blur-md border-b border-gray-200 dark:border-[#262626] shadow-subtle dark:shadow-dark-card"
-          : "bg-white/50 dark:bg-[#0A0A0A]/50 backdrop-blur-md border-b border-gray-100 dark:border-[#262626]"
-      )}
+          ? "border-b border-white/[0.06]"
+          : ""
+      }`}
+      style={{
+        background: scrolled ? "rgba(10,10,10,0.72)" : "transparent",
+        backdropFilter: scrolled ? "blur(24px) saturate(180%)" : "none",
+        WebkitBackdropFilter: scrolled ? "blur(24px) saturate(180%)" : "none",
+      }}
     >
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="flex items-center gap-3 group hover:opacity-80 transition-opacity"
-            aria-label="Handy & PC Service - Startseite"
-          >
-            <img
+      <div className="max-w-5xl mx-auto px-6 h-[60px] flex items-center justify-between">
+        {/* Logo lockup */}
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          className="flex items-center gap-2.5 group"
+        >
+          <div className="w-7 h-7 relative flex-shrink-0">
+            <Image
               src="/logo.png"
               alt="Handy & PC Service Logo"
-              className="w-10 h-10 md:w-12 md:h-12 object-contain flex-shrink-0"
-              loading="eager"
+              fill
+              className="object-contain"
+              priority
             />
-            <div className="leading-none hidden sm:block">
-              <div className="font-bold text-black dark:text-white text-sm md:text-base">
-                Handy & PC
-              </div>
-              <div className="text-xs text-gray-600 dark:text-[#A0A0A0]">
-                Service
-              </div>
-            </div>
-          </Link>
-
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={cn(
-                  "text-sm font-medium transition-colors",
-                  pathname === href || pathname.startsWith(href + "/")
-                    ? "text-black dark:text-white"
-                    : "text-gray-600 dark:text-[#A0A0A0] hover:text-black dark:hover:text-white"
-                )}
-              >
-                {label}
-              </Link>
-            ))}
           </div>
+          <span className="text-[14px] font-semibold tracking-tight text-[#F5F5F7] group-hover:text-white transition-colors">
+            Handy & PC Service
+          </span>
+        </button>
 
-          {/* Actions */}
-          <div className="flex items-center gap-2">
-            <DarkModeToggle />
-
-            {/* Cart */}
-            <Link
-              href="/cart"
-              className="relative p-2 text-gray-600 dark:text-[#A0A0A0] hover:text-black dark:hover:text-white transition-colors"
-            >
-              <ShoppingCart size={18} />
-              {totalItems > 0 && (
-                <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-xs font-bold rounded-full flex items-center justify-center">
-                  {totalItems}
-                </span>
-              )}
-            </Link>
-
-            {/* Mobile menu toggle */}
+        {/* Desktop right */}
+        <div className="hidden md:flex items-center gap-6">
+          {[
+            { label: "Leistungen", id: "leistungen" },
+            { label: "Formular",   id: "download"   },
+          ].map((item) => (
             <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="md:hidden p-2 text-gray-600 dark:text-[#A0A0A0] hover:text-black dark:hover:text-white transition-colors"
+              key={item.id}
+              onClick={() => goto(item.id)}
+              className="text-[13px] text-[#86868B] hover:text-[#F5F5F7] transition-colors duration-150"
             >
-              {isOpen ? <X size={20} /> : <Menu size={20} />}
+              {item.label}
             </button>
-          </div>
+          ))}
+          <button
+            onClick={() => goto("kontakt")}
+            className="ml-1 px-4 py-[7px] text-[13px] font-medium rounded-full border border-white/[0.14] text-[#F5F5F7] hover:bg-white/[0.07] transition-colors duration-150"
+          >
+            Kontakt
+          </button>
         </div>
+
+        {/* Mobile toggle */}
+        <button
+          className="md:hidden relative w-7 h-5 flex flex-col justify-between"
+          onClick={() => setMobileOpen(!mobileOpen)}
+          aria-label="Menü"
+        >
+          <span
+            className={`block h-px bg-[#F5F5F7] rounded transition-all duration-250 origin-left ${
+              mobileOpen ? "rotate-[42deg] translate-y-px" : "w-full"
+            }`}
+          />
+          <span
+            className={`block h-px bg-[#F5F5F7] rounded transition-all duration-200 ${
+              mobileOpen ? "opacity-0 scale-x-0" : "w-4/5"
+            }`}
+          />
+          <span
+            className={`block h-px bg-[#F5F5F7] rounded transition-all duration-250 origin-left ${
+              mobileOpen ? "-rotate-[42deg] -translate-y-px" : "w-3/5"
+            }`}
+          />
+        </button>
       </div>
 
-      {/* Mobile menu */}
-      {isOpen && (
-        <div className="md:hidden bg-white dark:bg-[#262626] border-t border-gray-100 dark:border-[#262626]">
-          <div className="max-w-7xl mx-auto px-6 py-4 space-y-1">
-            {navLinks.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={cn(
-                  "flex items-center w-full px-4 py-3 rounded-lg font-medium text-sm transition-colors",
-                  pathname === href
-                    ? "bg-gray-100 dark:bg-[#151515] text-black dark:text-white"
-                    : "text-gray-600 dark:text-[#A0A0A0] hover:text-black dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#262626]"
-                )}
-              >
-                {label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </nav>
+      {/* Mobile drawer */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="md:hidden overflow-hidden border-t border-white/[0.06]"
+            style={{ background: "rgba(10,10,10,0.95)", backdropFilter: "blur(24px)" }}
+          >
+            <div className="flex flex-col px-6 py-5 gap-1">
+              {[
+                { label: "Leistungen",  id: "leistungen" },
+                { label: "Formular",    id: "download"   },
+                { label: "Kontakt",     id: "kontakt"    },
+              ].map((item) => (
+                <button
+                  key={item.id}
+                  onClick={() => goto(item.id)}
+                  className="py-3 text-[15px] text-[#A1A1AA] hover:text-white text-left border-b border-white/[0.05] last:border-0 transition-colors"
+                >
+                  {item.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.header>
   );
 }

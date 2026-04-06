@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Easing } from "framer-motion";
 import { ReactNode } from "react";
 
 interface AnimatedButtonProps {
@@ -27,7 +27,7 @@ export function AnimatedButton({
   const commonProps = {
     whileHover: disabled ? undefined : { scale: 1.03 },
     whileTap: disabled ? undefined : { scale: 0.97 },
-    transition: { duration: 0.2, ease: "easeOut" },
+    transition: { duration: 0.2, ease: "easeOut" as Easing },
     className,
     onClick,
     disabled,
